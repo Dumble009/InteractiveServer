@@ -2,6 +2,7 @@ const server = require("ws").Server;
 const s = new server({ port: 5001 });
 
 let unityClients = [];
+let lastMsg = "";
 
 s.on("connection", (ws) => {
   ws.on("message", (message) => {
@@ -11,11 +12,13 @@ s.on("connection", (ws) => {
     if (message.toString() === "Unity") {
       unityClients.push(ws);
       console.log("accept new UnityClient : count " + unityClients.length);
-    } else {
-      console.log("echo to UnityClients");
+    } else if (message.toString() == "Require") {
       unityClients.forEach((unityWS) => {
-        unityWS.send(msgString);
+        unityWS.send(lastMsg);
       });
+    } else {
+      console.log("cache message");
+      lastMsg = msgString;
     }
   });
 
