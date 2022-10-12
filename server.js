@@ -6,7 +6,7 @@ let lastMsg = "";
 
 s.on("connection", (ws) => {
   ws.on("message", (message) => {
-    console.log("Received: " + message + "," + Date.now().toString());
+    console.log("Received: " + message + "," + new Date().getTime().toString);
 
     msgString = message.toString();
     if (message.toString() === "Unity") {
